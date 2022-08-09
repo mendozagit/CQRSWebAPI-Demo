@@ -19,21 +19,26 @@ namespace CQRSWebAPI_Demo.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await Mediator.Send(new GetAllProductsQuery()));
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await Mediator.Send(new GetProductByIdQuery { Id = id }));
         }
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int
+            id)
         {
             return Ok(await Mediator.Send(new DeleteProductByIdCommand { Id = id }));
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateProductCommand command)
         {
