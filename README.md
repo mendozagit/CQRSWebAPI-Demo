@@ -1,0 +1,3 @@
+#CQRS WebAPI
+Implementing CQRS with MediatR in ASP.NET Core
+Simple sample
