@@ -26,22 +26,25 @@ namespace CQRSWebAPI_Demo.Middleware
                 var response = context.Response;
                 response.ContentType = "application/json";
                 var responseModel = ApiResponse<string>.Fail(error.Message);
-                response.StatusCode = error switch
+                switch (error)
                 {
-                    ApiException e =>
-                        // custom application error
-                        (int)HttpStatusCode.BadRequest,
+                    case ApiException e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
 
-                    ValidationException e =>
+                    case ValidationException e:
                         // custom application error
-                        (int)HttpStatusCode.BadRequest,
-
-                    KeyNotFoundException e =>
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    // custom application error
+                    case KeyNotFoundException e:
                         // not found error
-                        (int)HttpStatusCode.NotFound,
-
-                    _ => (int)HttpStatusCode.InternalServerError
-                };
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    default:
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        break;
+                }
 
                 var result = JsonSerializer.Serialize(responseModel);
                 await response.WriteAsync(result);
