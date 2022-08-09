@@ -2,6 +2,7 @@ using CQRSWebAPI_Demo.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using CQRSWebAPI_Demo.Middleware;
 using CQRSWebAPI_Demo.PipelineBehaviours;
 using FluentValidation;
 
@@ -37,6 +38,8 @@ namespace CQRSWebAPI_Demo
             // Add  MediatR from  Assembly
             builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
             var app = builder.Build();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
